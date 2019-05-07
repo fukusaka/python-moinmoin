@@ -18,7 +18,9 @@ from farmconfig import FarmConfig
 # now we subclass that config (inherit from it) and change what's different:
 class Config(FarmConfig):
 
-    superuser = [u"admin", ]
+    # superuser = [u"admin", ]
+    # acl_rights_before = u"admin:read,write,delete,revert,admin"
+    # acl_rights_default = u"Trusted:read,write,delete,revert Known:read,write,delete,revert All:read"
 
     # basic options (you normally need to change these)
     sitename = u'MyWiki' # [Unicode]
