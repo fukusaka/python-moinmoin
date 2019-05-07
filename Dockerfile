@@ -45,7 +45,7 @@ RUN set -x \
   && ln -s /etc/init.d/uwsgi /etc/init.d/moin \
   && rc-update add moin default \
   && echo -e 'user=moin\ngroup=moin\nlogfile=/var/log/moin/moin.log' >> /etc/conf.d/moin \
-  && sed -i -e '/^#sys\.path\.insert(0, '\''\/path\/to\/farmconfigdir'\'')/asys.path.insert(0, '\''/etc/moin'\'')' \
+  && sed -i -e "/^#sys\.path\.insert(0, '\/path\/to\/farmconfigdir')/asys.path.insert(0, '/etc/moin')" \
       /usr/share/moin/server/moin*
 
 COPY conf/uwsgi-moin.ini /etc/moin/uwsgi.ini
