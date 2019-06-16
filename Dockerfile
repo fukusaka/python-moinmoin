@@ -7,6 +7,9 @@ LABEL \
   org.label-schema.vcs-url="https://github.com/fukusaka/python-moinmoin" \
   org.label-schema.version="2.0"
 
+ARG MOIN_UID=1000
+ARG MOIN_GID=1000
+
 ENV MOIN_VERSION=1.9.10
 
 RUN set -x \
@@ -26,14 +29,15 @@ RUN set -x \
         /etc/init.d/modules \
         /etc/init.d/modules-load \
         /etc/init.d/modloop \
+  && sed -i 's/\(hostname $opts\)/#\1/' /etc/init.d/hostname \
   && sed -i 's/^\([ \t]*\)cgroup_add_service/\1#cgroup_add_service/g' /lib/rc/sh/openrc-run.sh \
   && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh
 
 RUN set -x \
   && apk add --update --nocache uwsgi-python py-pip \
   && pip install moin==$MOIN_VERSION \
-  && addgroup -g 1000 moin \
-  && adduser -S -G moin -u 1000 moin \
+  && addgroup -g ${MOIN_UID} moin \
+  && adduser -S -G moin -u ${MOIN_GID} moin \
   && install -o moin -g moin -d /srv/moin/mywiki \
   && install -o moin -g moin -d /srv/moin/mywiki/html \
   && cp -r /usr/share/moin/data /srv/moin/mywiki \
@@ -59,6 +63,8 @@ RUN set -x \
 
 COPY conf/nginx-moin.conf /etc/nginx/conf.d/moin.conf
 
+ENV MOIN_UID=${MOIN_UID}
+ENV MOIN_GID=${MOIN_GID}
 ENV USE_NGINX=yes
 ENV SETUP_WIKI=yes
 ENV WIKI_ADMIN=admin

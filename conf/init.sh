@@ -22,6 +22,14 @@ if [ ! -f $SETUP_LOCK -a x"$SETUP_WIKI" = xyes ]; then
   touch $SETUP_LOCK
 fi
 
+if [ $(id -u moin) != $MOIN_UID ]; then
+    usermod -u $MOIN_UID moin
+fi
+
+if [ $(id -g moin) != $VMAIL_GID ]; then
+    groupmod -g $MOIN_GID moin
+fi
+
 unset WIKI_ADMIN WIKI_ADMIN_PASS WIKI_ADMIN_EMAIL WIKI_ACL_RIGHTS_BEFORE WIKI_ACL_RIGHTS_DEFAULT
 
 if [ x"$USE_NGINX" = xyes ]; then
