@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.10
 MAINTAINER fukusaka
 
 LABEL \
@@ -10,7 +10,7 @@ LABEL \
 ARG MOIN_UID=1000
 ARG MOIN_GID=1000
 
-ENV MOIN_VERSION=1.9.10
+ENV MOIN_VERSION=1.9.11
 
 RUN set -x \
   && apk add --update --no-cache openrc \
@@ -34,7 +34,7 @@ RUN set -x \
   && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh
 
 RUN set -x \
-  && apk add --update --no-cache uwsgi-python py-pip \
+  && apk add --update --no-cache uwsgi-python py2-pip \
   && pip install moin==$MOIN_VERSION \
   && addgroup -g ${MOIN_UID} moin \
   && adduser -S -G moin -u ${MOIN_GID} moin \
