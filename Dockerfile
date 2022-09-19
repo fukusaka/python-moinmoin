@@ -13,7 +13,7 @@ ARG MOIN_GID=1000
 ENV MOIN_VERSION=1.9.10
 
 RUN set -x \
-  && apk add --update --nocache openrc \
+  && apk add --update --no-cache openrc \
   && sed -i 's/^\(tty\d\d*\:\:\)/#\1/g' /etc/inittab \
   && sed -i \
     # Change subsystem type to "docker"
@@ -34,7 +34,7 @@ RUN set -x \
   && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh
 
 RUN set -x \
-  && apk add --update --nocache uwsgi-python py-pip \
+  && apk add --update --no-cache uwsgi-python py-pip \
   && pip install moin==$MOIN_VERSION \
   && addgroup -g ${MOIN_UID} moin \
   && adduser -S -G moin -u ${MOIN_GID} moin \
@@ -57,7 +57,7 @@ COPY conf/moin-farmconfig.py /etc/moin/farmconfig.py
 COPY conf/moin-mywiki.py /etc/moin/mywiki.py
 
 RUN set -x \
-  && apk add --update --nocache nginx \
+  && apk add --update --no-cache nginx \
   && mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf-orig \
   && addgroup nginx moin
 
